@@ -46,20 +46,54 @@ for i in order:
     # Adds burst time to current time (process finishes)
     # CT - completion time (when process is done)
     # Stores it in the list
+    # Updates the CPU clock by adding how long the process (burst time) runs
+    # example: if current_time = 10 and burst_time[i] = 5
+    # current_time = 10 + 5, current_time = 15
     current_time = current_time + burst_time[i]
+
+    # Copies the current time into CT
     CT = current_time
+
+    # Stores the completion time in the list at position 
+    # [i] - the position for specific process
     completion_time[i] = (CT)
 
     # Turnaround Time = Completion Time - Arrival Time (Total time from arrival to completion)
+    # example
+    # CT = 15 (finished at time 15) 
+    # arrival_time[i] = 10 (arrived at time 10) 
+    # TT = 15 - 10 = 5
     TT = CT - arrival_time[i]
+
+    # stores the turnaround time in the list at position
+    # ex. if i = 0 and TT = 5: turnaround_time[0] = 5  The list becomes: [5, 0, 0]
     turnaround_time[i] = (TT)
 
     # Waiting Time = Turnaround Time - Burst Time (Time spent waiting for CPU)
+    # Calculates how long the process waited before running
+    # ex. TT = 5 (total time was 5), burst_time[i] = 3 (actually ran for 3) 
+    # WT = 5 - 3 = 2 (waited for 2)
     WT = TT - burst_time[i]
+
+    # Stores the waiting time in the list
+    # ex. If i = 0 and WT = 2: waiting_time[0] = 2  The list becomes: [2, 0, 0]
     waiting_time[i] = (WT)
 
     # Records which process ran and when it finished
+    # Adds the process name to the gantt_order list.
+    # gantt_order - list tracking which processes ran
+    # .append() - adds something to the end of the list
+    # f"P{i+1}" - creates the process name sequentially
+    # ex. If i = 0: f"P{i+1}" = f"P{0+1}" = "P1" gantt_order.append("P1")  
+    # gantt_order becomes: ["P1"]  
+    # If i = 1, gantt_order becomes: ["P1", "P2"]
     gantt_order.append(f"P{i+1}")
+
+    # gantt_times - list tracking when each process finished
+    # current_time - the time right now (when this process finished)
+    # ex. If current_time = 15: gantt_times.append(15)  
+    # gantt_times becomes: [0, 15]  
+    # If current_time = 20, gantt_times becomes: [0, 15, 20]
     gantt_times.append(current_time)
 
 # Prints table headers.
@@ -72,8 +106,7 @@ for i in range(n):
     # {arrival_time[i]:<11} - Gets arrival time from the list
     # if i=0 it gets the first arrival time
     # :<11 means left align 11 character spaces
-    print(
-        f"P{i+1:<10}{arrival_time[i]:<11}{burst_time[i]:<11}{completion_time[i]:<11}{turnaround_time[i]:<11}{waiting_time[i]:<11}")
+    print(f"P{i+1:<10}{arrival_time[i]:<11}{burst_time[i]:<11}{completion_time[i]:<11}{turnaround_time[i]:<11}{waiting_time[i]:<11}")
 
 # Adds all numbers in the list
 # /n divides it by the number of processes
@@ -127,7 +160,19 @@ for i in range(1, len(gantt_times)):
     timeline += " " * spaces_needed + str(gantt_times[i])
 print(timeline)
 
-print(
-    f"\nAverage Turnaround Time: ({' + '.join(str(waiting_time[i]) for i in range(n))}) / {n} = {ATT:.2f}")
-print(
-    f"Average Waiting Time: ({' + '.join(str(turnaround_time[i]) for i in range(n))}) / {n} = {AWT:.2f}")
+# Shows how Average Turnaround Time was calculated
+# for i in range(n) - loops through all processes (0, 1, 2...)  
+# turnaround_time[i] - gets each waiting time  
+# str(turnaround_time[i]) - converts to text  
+# ' + '.join(...) - puts " + " between each number
+# Example: If turnaround_time = [0, 3, 4]:  "0 + 3 + 4"
+# {n} - shows how many processes (divisor)  
+# {ATT:.2f} - shows result with 2 decimal places
+print(f"\nAverage Turnaround Time: ({' + '.join(str(turnaround_time[i]) for i in range(n))}) / {n} = {ATT:.2f}")
+
+# shows how Average Waiting Time was calculated
+# waiting_time[i] Gets the waiting time for each process from the list
+# str(waiting_time[i]) converts each number to string. Ex.  0 becomes "0"
+# because join() only works with strings, not numbers.
+# join() is used to combine elements into a single string, placing a chosen separator between each element
+print(f"Average Waiting Time: ({' + '.join(str(waiting_time[i]) for i in range(n))}) / {n} = {AWT:.2f}")

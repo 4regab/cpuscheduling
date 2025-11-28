@@ -57,5 +57,5 @@ for i in range(1, len(gantt_times)):
     timeline += " " * spaces_needed + str(gantt_times[i])
 print(timeline)
 
-print(f"\nAverage Turnaround Time: ({' + '.join(str(waiting_time[i]) for i in range(n))}) / {n} = {ATT:.2f}")
-print(f"Average Waiting Time: ({' + '.join(str(turnaround_time[i]) for i in range(n))}) / {n} = {AWT:.2f}")
+print(f"\nAverage Turnaround Time: ({' + '.join(str(turnaround_time[i]) for i in range(n))}) / {n} = {ATT:.2f}")
+print(f"Average Waiting Time: ({' + '.join(str(waiting_time[i]) for i in range(n))}) / {n} = {AWT:.2f}")
